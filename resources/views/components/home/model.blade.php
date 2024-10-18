@@ -23,7 +23,7 @@
                     <h3 class="newsletter-title">Subscribe Newsletter.</h3>
 
                     <p class="newsletter-desc">
-                        Subscribe the <b>The it Solution Bd</b> to get latest products and discount update.
+                        Subscribe the <b>Localbazer One Of The Best Solution</b> to get latest products and discount update.
                     </p>
 
                 </div>

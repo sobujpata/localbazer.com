@@ -206,8 +206,7 @@
                     </div>
 
                     <address class="content">
-                        04/D House 09 Rode
-                        Chondrima Model Town, Mohammadpur, Dhaka-1207, Bangladesh
+                        Dhaka-1206, Bangladesh
                     </address>
                 </li>
 
@@ -216,7 +215,7 @@
                         <ion-icon name="call-outline"></ion-icon>
                     </div>
 
-                    <a href="tel:+607936-8058" class="footer-nav-link">(+880) 016-05109076</a>
+                    <a href="tel:+607936-8058" class="footer-nav-link">(+880) 1739871705</a>
                 </li>
 
                 <li class="footer-nav-item flex">
@@ -224,7 +223,7 @@
                         <ion-icon name="mail-outline"></ion-icon>
                     </div>
 
-                    <a href="mailto:example@gmail.com" class="footer-nav-link">progerror@gmail.com</a>
+                    <a href="mailto:example@gmail.com" class="footer-nav-link">localbazer24@gmail.com</a>
                 </li>
 
             </ul>
@@ -279,7 +278,7 @@
             <img src="{{ asset('images/payment.png') }}" alt="payment method" class="payment-img">
 
             <p class="copyright">
-                Copyright &copy; <a href="https://www.facebook.com/programerror6" target="_blank">Ariful</a> all
+                Copyright &copy; <a href="https://www.localbazer.com" target="_blank">Localbazer.com</a> all
                 rights reserved.
             </p>
 
