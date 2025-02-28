@@ -84,32 +84,37 @@
                    </a>
 
                    <div class="header-search-container dropdown">
-                    <form action="{{ url('/products/search/') }}" method="get">
-                        <input type="search" name="search" class="search-field" placeholder="Enter your product name..." id="search">
-                        
-                        <button class="search-btn">
-                            <ion-icon name="search-outline"></ion-icon>
-                        </button>
-                    </form>
-                    
-                        <ul id="searchResults" class="dropdown-menu w-100"></ul>
-                        
+                       <form action="{{ url('/products/search/') }}" method="get">
+                           <input type="search" name="search" class="search-field"
+                               placeholder="Enter your product name..." id="search">
+
+                           <button class="search-btn">
+                               <ion-icon name="search-outline"></ion-icon>
+                           </button>
+                       </form>
+
+                       <ul id="searchResults" class="dropdown-menu w-100"></ul>
+
                    </div>
-                   
-                   
 
-<script>
-    document.getElementById('search').addEventListener('keyup', function () {
-        let query = this.value;
-        let dropdown = document.getElementById('searchResults');
 
-        if (query.length > 2) {
-            axios.get('/search-products', { params: { q: query } })
-                .then(response => {
-                    let results = response.data;
-                    if (results.length > 0) {
-                        let suggestions = results.map(product =>
-                            `<li>
+
+                   <script>
+                       document.getElementById('search').addEventListener('keyup', function() {
+                           let query = this.value;
+                           let dropdown = document.getElementById('searchResults');
+
+                           if (query.length > 2) {
+                               axios.get('/search-products', {
+                                       params: {
+                                           q: query
+                                       }
+                                   })
+                                   .then(response => {
+                                       let results = response.data;
+                                       if (results.length > 0) {
+                                           let suggestions = results.map(product =>
+                                               `<li>
                                 <a class="dropdown-item" href="/products/${product.id}">
                                     <div class="row">
                                         <div class="col-2">
@@ -123,33 +128,33 @@
                                      
                                 </a>
                             </li>`
-                        ).join('');
-                        dropdown.innerHTML = suggestions;
-                        dropdown.classList.add('show'); // Show dropdown
-                    } else {
-                        dropdown.classList.remove('show');
-                    }
-                });
-        } else {
-            dropdown.classList.remove('show'); // Hide dropdown when no input
-        }
-    });
+                                           ).join('');
+                                           dropdown.innerHTML = suggestions;
+                                           dropdown.classList.add('show'); // Show dropdown
+                                       } else {
+                                           dropdown.classList.remove('show');
+                                       }
+                                   });
+                           } else {
+                               dropdown.classList.remove('show'); // Hide dropdown when no input
+                           }
+                       });
 
-    // Hide dropdown when clicking outside
-    document.addEventListener('click', function (e) {
-        if (!document.getElementById('search').contains(e.target)) {
-            document.getElementById('searchResults').classList.remove('show');
-        }
-    });
-</script>
+                       // Hide dropdown when clicking outside
+                       document.addEventListener('click', function(e) {
+                           if (!document.getElementById('search').contains(e.target)) {
+                               document.getElementById('searchResults').classList.remove('show');
+                           }
+                       });
+                   </script>
 
                    <div class="header-user-actions">
-                    <a href="{{ url('/profile') }}">
-                       <button class="action-btn">
-                        
-                            <ion-icon name="person-outline"></ion-icon>
-                        </button>
-                    </a>
+                       <a href="{{ url('/profile') }}">
+                           <button class="action-btn">
+
+                               <ion-icon name="person-outline"></ion-icon>
+                           </button>
+                       </a>
 
                        <button class="action-btn">
                            <ion-icon name="heart-outline"></ion-icon>
@@ -166,7 +171,7 @@
                </div>
 
            </div>
-           
+
            <nav class="desktop-navigation-menu">
 
                <div class="container">
@@ -244,14 +249,16 @@
                    font-size: 36px;
                    margin-left: 50px;
                }
-               .mobile-hover-menu{
-                padding:6px;
+
+               .mobile-hover-menu {
+                   padding: 6px;
                }
+
                .mobile-hover-menu:hover {
-                    background-color: #f7d9d9;
-                    border-radius: 8px;
-                    padding: 6px;
-                }
+                   background-color: #f7d9d9;
+                   border-radius: 8px;
+                   padding: 6px;
+               }
 
                @media screen and (max-height: 450px) {
                    .sidenav {
@@ -285,38 +292,39 @@
                </p>
 
                <div class="collapse" id="collapse-category">
-                @foreach ($mainCategories as $item)
-                   <ul>
-                        <li>
-                            <a data-bs-toggle="collapse" href="#sub-category-{{ $item->id }}" role="button" aria-expanded="false"
-                                aria-controls="sub-category-{{ $item->id }}" class="text-dark">
-                                {{ $item->categoryName }} <span style="float:right;" class="text-bold">+</span>
-                            </a>
-                            <div class="collapse" id="sub-category-{{ $item->id }}">
-                                @if ($item->categories->isNotEmpty())
-                                   <ul>
-                                       @foreach ($item->categories as $subcategory)
-                                           <li>
-                                                <a class="text-dark"
-                                                   href="{{ url('/product-category/' . urlencode($subcategory->categoryName)) }}">{{ $subcategory->categoryName }}
-                                                   <span style="float:right">300</span>
-                                                </a>
-                                            </li>
-                                       @endforeach
-                                   </ul>
-                               @else
-                                   <p>No subcategories available.</p>
-                               @endif
-                            </div>
-                        </li>
-                   </ul>
+                   @foreach ($mainCategories as $item)
+                       <ul>
+                           <li>
+                               <a data-bs-toggle="collapse" href="#sub-category-{{ $item->id }}" role="button"
+                                   aria-expanded="false" aria-controls="sub-category-{{ $item->id }}"
+                                   class="text-dark">
+                                   {{ $item->categoryName }} <span style="float:right;" class="text-bold">+</span>
+                               </a>
+                               <div class="collapse" id="sub-category-{{ $item->id }}">
+                                   @if ($item->categories->isNotEmpty())
+                                       <ul>
+                                           @foreach ($item->categories as $subcategory)
+                                               <li>
+                                                   <a class="text-dark"
+                                                       href="{{ url('/product-category/' . urlencode($subcategory->categoryName)) }}">{{ $subcategory->categoryName }}
+                                                       <span style="float:right">300</span>
+                                                   </a>
+                                               </li>
+                                           @endforeach
+                                       </ul>
+                                   @else
+                                       <p>No subcategories available.</p>
+                                   @endif
+                               </div>
+                           </li>
+                       </ul>
                    @endforeach
                </div>
                <span id="menuListMobile" style="width:330px !important">
-               
-               
 
-            </span>
+
+
+               </span>
                <p class="mb-2 mobile-hover-menu ">
                    <a href="{{ url('/products-remark/Special') }}" class="text-dark">Hot Offers</a>
                </p>
@@ -372,11 +380,11 @@
                                    <ul>
                                        @foreach ($item->categories as $subcategory)
                                            <li>
-                                                <a class="text-dark"
+                                               <a class="text-dark"
                                                    href="{{ url('/product-category/' . urlencode($subcategory->categoryName)) }}">{{ $subcategory->categoryName }}
                                                    <span style="float:right">>></span>
-                                                </a>
-                                            </li>
+                                               </a>
+                                           </li>
                                        @endforeach
                                    </ul>
                                @else
@@ -514,7 +522,7 @@
                             ${subCategoriesHtml}
                             <li class="panel-list-item">
                                 <a href="#">
-                                    <img src="{{ asset('images/apple${mainCategory.id}.jpg') }}" alt="${mainCategory.categoryName}" width="250" height="119">
+                                    <img src="{{ asset('${mainCategory.categoryImg}') }}" alt="${mainCategory.categoryName}" width="250" height="119">
                                 </a>
                             </li>
                         </ul>
@@ -526,56 +534,59 @@
 
 
        async function getNav() {
-    try {
-        let res = await axios.get('/nav-menu');
+           try {
+               let res = await axios.get('/nav-menu');
 
-        let menuList = $("#menuList");
-        menuList.html(''); // Clear previous menu items
-        let menuListMobile = $("#menuListMobile");
-        menuListMobile.html(''); // Clear previous menu items
+               let menuList = $("#menuList");
+               menuList.html(''); // Clear previous menu items
+               let menuListMobile = $("#menuListMobile");
+               menuListMobile.html(''); // Clear previous menu items
 
-        let menuMap = {}; // To group submenus under their respective main menu
+               let menuMap = {}; // To group submenus under their respective main menu
 
-        res.data.forEach(item => {
-            let mainMenuId = item['main_menu']['id'];
-            let mainMenuName = item['main_menu']['name'];
-            let subMenuName = item['name'];
-            let subMenuUrl = item['url'] || "#"; // Ensure a valid URL
+               res.data.forEach(item => {
+                   let mainMenuId = item['main_menu']['id'];
+                   let mainMenuName = item['main_menu']['name'];
+                   let subMenuName = item['name'];
+                   let subMenuUrl = item['url'] || "#"; // Ensure a valid URL
 
-            // If main menu doesn't exist, create it
-            if (!menuMap[mainMenuId]) {
-                menuMap[mainMenuId] = {
-                    name: mainMenuName,
-                    subMenus: []
-                };
-            }
-            menuMap[mainMenuId].subMenus.push({ name: subMenuName, url: subMenuUrl });
-        });
+                   // If main menu doesn't exist, create it
+                   if (!menuMap[mainMenuId]) {
+                       menuMap[mainMenuId] = {
+                           name: mainMenuName,
+                           subMenus: []
+                       };
+                   }
+                   menuMap[mainMenuId].subMenus.push({
+                       name: subMenuName,
+                       url: subMenuUrl
+                   });
+               });
 
-        // Render the desktop menu
-        Object.values(menuMap).forEach(menu => {
-            let mainMenuLi = $(`
+               // Render the desktop menu
+               Object.values(menuMap).forEach(menu => {
+                   let mainMenuLi = $(`
                 <li class="menu-category">
                     <a href="#" class="menu-title px-2">${menu.name}</a>
                     <ul class="dropdown-list"></ul>
                 </li>
             `);
 
-            let dropdownList = mainMenuLi.find(".dropdown-list");
+                   let dropdownList = mainMenuLi.find(".dropdown-list");
 
-            menu.subMenus.forEach(subMenu => {
-                dropdownList.append(
-                    `<li class="dropdown-item"><a href="${subMenu.url}">${subMenu.name}</a></li>`
-                );
-            });
+                   menu.subMenus.forEach(subMenu => {
+                       dropdownList.append(
+                           `<li class="dropdown-item"><a href="${subMenu.url}">${subMenu.name}</a></li>`
+                       );
+                   });
 
-            menuList.append(mainMenuLi);
-        });
+                   menuList.append(mainMenuLi);
+               });
 
-        // Render the mobile menu
-        Object.values(menuMap).forEach(menu => {
-            let menuSlug = menu.name.replace(/\s+/g, '-').toLowerCase(); // Sanitize name for IDs
-            let mainMenuLiMobile = $(`
+               // Render the mobile menu
+               Object.values(menuMap).forEach(menu => {
+                   let menuSlug = menu.name.replace(/\s+/g, '-').toLowerCase(); // Sanitize name for IDs
+                   let mainMenuLiMobile = $(`
                 <li class="menu-category">
                     <p class="mb-2 mobile-hover-menu">
                         <a data-bs-toggle="collapse" href="#collapse-${menuSlug}" role="button" aria-expanded="false"
@@ -589,23 +600,22 @@
                 </li>
             `);
 
-            let dropdownList = mainMenuLiMobile.find(".dropdown-list");
+                   let dropdownList = mainMenuLiMobile.find(".dropdown-list");
 
-            menu.subMenus.forEach(subMenu => {
-                dropdownList.append(
-                    `<li class="dropdown-item"><a href="${subMenu.url}" class="text-dark">${subMenu.name}</a></li>`
-                );
-            });
+                   menu.subMenus.forEach(subMenu => {
+                       dropdownList.append(
+                           `<li class="dropdown-item"><a href="${subMenu.url}" class="text-dark">${subMenu.name}</a></li>`
+                       );
+                   });
 
-            menuListMobile.append(mainMenuLiMobile);
-        });
+                   menuListMobile.append(mainMenuLiMobile);
+               });
 
-    } catch (error) {
-        console.error("Failed to fetch navigation menu:", error);
-        alert("Error loading menu. Please try again.");
-    }
-}
+           } catch (error) {
+               console.error("Failed to fetch navigation menu:", error);
+               alert("Error loading menu. Please try again.");
+           }
+       }
 
-getNav();
-      
+       getNav();
    </script>
