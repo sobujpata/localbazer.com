@@ -1,5 +1,4 @@
 <div>
-
     <div class="container">
 
         <div class="testimonials-box">
@@ -10,24 +9,11 @@
 
                 <h2 class="title">testimonial</h2>
 
-                <div class="testimonial-card">
+                <span id="testimonialCard">
 
-                    <img src="{{ asset('images/testimonial-1.jpg') }}" alt="alan doe" class="testimonial-banner"
-                        width="80" height="80">
+                </span>
 
-                    <p class="testimonial-name">Alan Doe</p>
-
-                    <p class="testimonial-title">CEO & Founder Invision</p>
-
-                    <img src="{{ asset('images/icons/quotes.svg') }}" alt="quotation" class="quotation-img"
-                        width="26">
-
-                    <p class="testimonial-desc">
-                        Lorem ipsum dolor sit amet consectetur Lorem ipsum
-                        dolor dolor sit amet.
-                    </p>
-
-                </div>
+                
 
             </div>
 
@@ -35,21 +21,9 @@
 
             <!--- CTA-->
 
-            <div class="cta-container">
+            <div class="cta-container" id="offerCard">
 
-                <img src="{{ asset('images/Earbuds/2.webp') }}" alt="summer collection" class="cta-banner">
-
-                <a href="#" class="cta-content">
-
-                    <p class="discount">25% Discount</p>
-
-                    <h2 class="cta-title">Summer collection</h2>
-
-                    <p class="cta-text">Starting @ $10</p>
-
-                    <button class="cta-btn">Shop now</button>
-
-                </a>
+                
 
             </div>
 
@@ -61,82 +35,7 @@
 
                 <h2 class="title">Our Services</h2>
 
-                <div class="service-container">
-
-                    <a href="#" class="service-item">
-
-                        <div class="service-icon">
-                            <ion-icon name="boat-outline"></ion-icon>
-                        </div>
-
-                        <div class="service-content">
-
-                            <h3 class="service-title">Worldwide Delivery</h3>
-                            <p class="service-desc">For Order Over $100</p>
-
-                        </div>
-
-                    </a>
-
-                    <a href="#" class="service-item">
-
-                        <div class="service-icon">
-                            <ion-icon name="rocket-outline"></ion-icon>
-                        </div>
-
-                        <div class="service-content">
-
-                            <h3 class="service-title">Next Day delivery</h3>
-                            <p class="service-desc">UK Orders Only</p>
-
-                        </div>
-
-                    </a>
-
-                    <a href="#" class="service-item">
-
-                        <div class="service-icon">
-                            <ion-icon name="call-outline"></ion-icon>
-                        </div>
-
-                        <div class="service-content">
-
-                            <h3 class="service-title">Best Online Support</h3>
-                            <p class="service-desc">Hours: 8AM - 11PM</p>
-
-                        </div>
-
-                    </a>
-
-                    <a href="#" class="service-item">
-
-                        <div class="service-icon">
-                            <ion-icon name="arrow-undo-outline"></ion-icon>
-                        </div>
-
-                        <div class="service-content">
-
-                            <h3 class="service-title">Return Policy</h3>
-                            <p class="service-desc">Easy & Free Return</p>
-
-                        </div>
-
-                    </a>
-
-                    <a href="#" class="service-item">
-
-                        <div class="service-icon">
-                            <ion-icon name="ticket-outline"></ion-icon>
-                        </div>
-
-                        <div class="service-content">
-
-                            <h3 class="service-title">30% money back</h3>
-                            <p class="service-desc">For Order Over $100</p>
-
-                        </div>
-
-                    </a>
+                <div class="service-container" id="services">
 
                 </div>
 
@@ -147,3 +46,111 @@
     </div>
 
 </div>
+
+<script>
+    getTestimonial()
+    async function getTestimonial(){
+        //Testimonial
+        try {
+            let resTestimonial = await axios.get("testimonial");
+            // console.log(resTestimonial)
+            // Clear existing items
+            document.getElementById("testimonialCard").innerHTML = '';
+
+            let testimonialHTML = '';
+            resTestimonial.data.forEach(function(item) {
+            
+            testimonialHTML += `
+                       <div class="testimonial-card">
+
+                        <img src="${item['image']}" alt="${item['name']}" class="testimonial-banner"
+                            width="80" height="80">
+
+                        <p class="testimonial-name">${item['name']}</p>
+
+                        <p class="testimonial-title">${item['position']}</p>
+
+                        <img src="${item['icon']}" alt="quotation" class="quotation-img"
+                            width="26">
+
+                        <p class="testimonial-desc">
+                            ${item['testimonial']}
+                        </p>
+
+                    </div>
+                    `;
+                });
+
+            // Insert into DOM
+            document.getElementById("testimonialCard").innerHTML = testimonialHTML;
+            
+        } catch (error) {
+            console.error('Error loading Testimonial:', error);
+        }
+        try {
+            let resOfferCard = await axios.get("/offer-card-home");
+            console.log(resOfferCard)
+            // Clear existing items
+            document.getElementById("offerCard").innerHTML = '';
+
+            let offerHTML = '';
+            resOfferCard.data.forEach(function(item) {
+            
+            offerHTML += `                       
+                    <img src="${item['image']}" alt="${item['title']}" class="cta-banner">
+
+                    <a href="{{ url('/products-remark/Special') }}" class="cta-content">
+
+                        <p class="discount">${item['discount']}</p>
+
+                        <h2 class="cta-title">${item['title']}</h2>
+
+                        <p class="cta-text">${item['short_des']}</p>
+
+                        <button class="cta-btn">Shop now</button>
+
+                    </a>
+                    `;
+                });
+
+            // Insert into DOM
+            document.getElementById("offerCard").innerHTML = offerHTML;
+            
+        } catch (error) {
+            console.error('Error loading offer card:', error);
+        }
+        try {
+            let ressservices = await axios.get("services");
+            // console.log(ressservices)
+            // Clear existing items
+            document.getElementById("services").innerHTML = '';
+
+            let sservicesHTML = '';
+            ressservices.data.forEach(function(item) {
+            
+            sservicesHTML += `                       
+                    <a href="#" class="service-item">
+
+                        <div class="service-icon">
+                            <ion-icon name="${item['icon']}"></ion-icon>
+                        </div>
+
+                        <div class="service-content">
+
+                            <h3 class="service-title">${item['title']}</h3>
+                            <p class="service-desc">${item['short_des']}</p>
+
+                        </div>
+
+                    </a>
+                    `;
+                });
+
+            // Insert into DOM
+            document.getElementById("services").innerHTML = sservicesHTML;
+            
+        } catch (error) {
+            console.error('Error loading services:', error);
+        }
+    }
+</script>

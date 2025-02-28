@@ -1,83 +1,6 @@
 <!--- FOOTER-->
 
 <footer>
-
-    <div class="footer-category">
-
-        <div class="container">
-
-            <h2 class="footer-category-title">Brand directory</h2>
-
-            <div class="footer-category-box">
-
-                <h3 class="category-box-title">Fashion :</h3>
-
-                <a href="#" class="footer-category-link">T-shirt</a>
-                <a href="#" class="footer-category-link">Shirts</a>
-                <a href="#" class="footer-category-link">shorts & jeans</a>
-                <a href="#" class="footer-category-link">jacket</a>
-                <a href="#" class="footer-category-link">dress & frock</a>
-                <a href="#" class="footer-category-link">innerwear</a>
-                <a href="#" class="footer-category-link">hosiery</a>
-
-            </div>
-
-            <div class="footer-category-box">
-                <h3 class="category-box-title">footwear :</h3>
-
-                <a href="#" class="footer-category-link">sport</a>
-                <a href="#" class="footer-category-link">formal</a>
-                <a href="#" class="footer-category-link">Boots</a>
-                <a href="#" class="footer-category-link">casual</a>
-                <a href="#" class="footer-category-link">cowboy shoes</a>
-                <a href="#" class="footer-category-link">safety shoes</a>
-                <a href="#" class="footer-category-link">Party wear shoes</a>
-                <a href="#" class="footer-category-link">Branded</a>
-                <a href="#" class="footer-category-link">Firstcopy</a>
-                <a href="#" class="footer-category-link">Long shoes</a>
-            </div>
-
-            <div class="footer-category-box">
-                <h3 class="category-box-title">jewellery :</h3>
-
-                <a href="#" class="footer-category-link">Necklace</a>
-                <a href="#" class="footer-category-link">Earrings</a>
-                <a href="#" class="footer-category-link">Couple rings</a>
-                <a href="#" class="footer-category-link">Pendants</a>
-                <a href="#" class="footer-category-link">Crystal</a>
-                <a href="#" class="footer-category-link">Bangles</a>
-                <a href="#" class="footer-category-link">bracelets</a>
-                <a href="#" class="footer-category-link">nosepin</a>
-                <a href="#" class="footer-category-link">chain</a>
-                <a href="#" class="footer-category-link">Earrings</a>
-                <a href="#" class="footer-category-link">Couple rings</a>
-            </div>
-
-            <div class="footer-category-box">
-                <h3 class="category-box-title">cosmetics :</h3>
-
-                <a href="#" class="footer-category-link">Shampoo</a>
-                <a href="#" class="footer-category-link">Bodywash</a>
-                <a href="#" class="footer-category-link">Facewash</a>
-                <a href="#" class="footer-category-link">makeup kit</a>
-                <a href="#" class="footer-category-link">liner</a>
-                <a href="#" class="footer-category-link">lipstick</a>
-                <a href="#" class="footer-category-link">prefume</a>
-                <a href="#" class="footer-category-link">Body soap</a>
-                <a href="#" class="footer-category-link">scrub</a>
-                <a href="#" class="footer-category-link">hair gel</a>
-                <a href="#" class="footer-category-link">hair colors</a>
-                <a href="#" class="footer-category-link">hair dye</a>
-                <a href="#" class="footer-category-link">sunscreen</a>
-                <a href="#" class="footer-category-link">skin loson</a>
-                <a href="#" class="footer-category-link">liner</a>
-                <a href="#" class="footer-category-link">lipstick</a>
-            </div>
-
-        </div>
-
-    </div>
-
     <div class="footer-nav">
 
         <div class="container">
@@ -87,26 +10,9 @@
                 <li class="footer-nav-item">
                     <h2 class="nav-title">Popular Categories</h2>
                 </li>
+                <div id="footerCategory">
 
-                <li class="footer-nav-item">
-                    <a href="#" class="footer-nav-link">Computer</a>
-                </li>
-
-                <li class="footer-nav-item">
-                    <a href="#" class="footer-nav-link">Electronic</a>
-                </li>
-
-                <li class="footer-nav-item">
-                    <a href="#" class="footer-nav-link">Mobile Phone</a>
-                </li>
-
-                <li class="footer-nav-item">
-                    <a href="#" class="footer-nav-link">Apple 16</a>
-                </li>
-
-                <li class="footer-nav-item">
-                    <a href="#" class="footer-nav-link">Watches</a>
-                </li>
+                </div>
 
             </ul>
 
@@ -117,19 +23,19 @@
                 </li>
 
                 <li class="footer-nav-item">
-                    <a href="#" class="footer-nav-link">Prices drop</a>
+                    <a href="{{ url('/products-remarks/new') }}" class="footer-nav-link">New Arrivals</a>
                 </li>
 
                 <li class="footer-nav-item">
-                    <a href="#" class="footer-nav-link">New products</a>
+                    <a href="{{ url('/products-remarks/Trending') }}" class="footer-nav-link">Trending</a>
                 </li>
 
                 <li class="footer-nav-item">
-                    <a href="#" class="footer-nav-link">Best sales</a>
+                    <a href="{{ url('/products-remarks/Top') }}" class="footer-nav-link">Top Rated</a>
                 </li>
 
                 <li class="footer-nav-item">
-                    <a href="#" class="footer-nav-link">Contact us</a>
+                    <a href="#" class="footer-nav-link">Best Sale</a>
                 </li>
 
                 <li class="footer-nav-item">
@@ -278,7 +184,7 @@
             <img src="{{ asset('images/payment.png') }}" alt="payment method" class="payment-img">
 
             <p class="copyright">
-                Copyright &copy; <a href="https://www.localbazer.com" target="_blank">Localbazer.com</a> all
+                Copyright &copy; <a href="https://sobujpata.github.io/info/" target="_blank">Md Salim Reza</a> all
                 rights reserved.
             </p>
 
@@ -288,3 +194,23 @@
     </div>
 
 </footer>
+
+<script>
+    getCategoryFooter();
+    async function getCategoryFooter(){
+        let res = await axios.get('/category-footer');
+
+        // console.log(res);
+        res.data.forEach(function(item){
+            let div = `
+                <li class="footer-nav-item">
+                    <a href="#" class="footer-nav-link">${item['categoryName']}</a>
+                </li>
+
+            </div>
+            `;
+            // Use innerHTML to append the string as HTML
+            document.getElementById('footerCategory').innerHTML += div;
+        })
+    }
+</script>

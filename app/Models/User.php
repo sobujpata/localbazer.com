@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\CustomerProfile;
 
 class User extends Authenticatable
 {
@@ -18,9 +19,20 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'firstName',
+        'lastName',
         'email',
+        'mobile',
         'password',
+        'otp',
+        'role'
+    ];
+
+    
+
+    protected $attributes = [
+        'otp' => '0',
+        'role' => 'customer'
     ];
 
     /**
@@ -42,4 +54,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function profile()
+    {
+        return $this->belongsTo(CustomerProfile::class, 'id','user_id');
+    }
 }
+
+

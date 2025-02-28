@@ -1,0 +1,145 @@
+/* The Modal (background) */
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+    border-radius: 5px;
+}
+
+/* Modal Content */
+.modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fefefe;
+    border: 1px solid #888;
+    border-radius: 8px;
+    padding: 10px;
+    z-index: 1000;
+    margin: auto;
+    /* padding: 0; */
+    border: 1px solid #888;
+    /* width: 80%; */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0;
+    }
+
+    to {
+        top: 0;
+        opacity: 1;
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0;
+    }
+
+    to {
+        top: 0;
+        opacity: 1;
+    }
+}
+
+/* The Close Button */
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #f3670a;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px;
+    background-color: #000000;
+    color: white;
+}
+
+.modal-body {
+    padding: 2px 16px;
+}
+
+.modal-footer {
+    padding: 2px;
+    background-color: #000;
+    color: white;
+}
+
+/* Button style for Pending status */
+.btn-blue {
+    background-color: blue;
+    color: white;
+    border: 1px solid blue;
+}
+
+.btn-blue:hover {
+    background-color: darkblue;
+    border: 1px solid darkblue;
+}
+
+/* Button style for Processing status */
+.btn-black {
+    background-color: black;
+    color: white;
+    border: 1px solid black;
+}
+
+.btn-black:hover {
+    background-color: darkgray;
+    border: 1px solid darkgray;
+}
+.btn-yellow{
+    background-color: rgb(193, 233, 14);
+    color: rgb(15, 0, 0);
+    border: 1px solid black;
+}
+.btn-yellow:hover{
+    background-color: rgb(207, 64, 64);
+    border: 1px solid #f1eaea
+}
+
+.btn-red{
+    background-color: rgb(245, 4, 4);
+    color: white;
+    border: 1px solid rgb(236, 233, 228);
+}
+.btn-red:hover{
+    background-color: rgb(207, 64, 64);
+    border: 1px solid #750505
+}
