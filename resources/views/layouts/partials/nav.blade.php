@@ -568,7 +568,7 @@
                    let mainMenuLi = $(`
                 <li class="menu-category">
                     <a href="#" class="menu-title px-2">${menu.name}</a>
-                    <ul class="dropdown-list"></ul>
+                    <ul class="dropdown-list" style="width:265px !important;"></ul>
                 </li>
             `);
 

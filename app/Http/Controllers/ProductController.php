@@ -125,8 +125,14 @@ class ProductController extends Controller
 
     public function CategoryWise(Request $request, $categoryName)
     {
+        
 
-        $category = Category::where('categoryName', $categoryName)->first();
+        // Trim spaces and replace special characters
+        $cleanCategoryName = trim($categoryName);
+        $cleanCategoryName = str_replace(['+'], ' ', $cleanCategoryName); // Replace '+' and '&' with space
+        // dd($cleanCategoryName);
+
+        $category = Category::where('categoryName', $cleanCategoryName)->first();
 
         if (!$category) {
             return response()->json(['message' => 'Category not found'], 404);
