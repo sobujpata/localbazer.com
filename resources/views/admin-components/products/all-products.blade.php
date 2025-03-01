@@ -52,9 +52,9 @@
                         <td>${index+1}</td>
                         <td><img src="${item['image']}" style="width: 70px; height: 80px;" alt="No Image"/></td>
                         <td>${item['title']}</td>
-                        <td>${item['main_category_id']}</td>
-                        <td>${item['category_id']}</td>
-                        <td>${item['brand_id']}</td>
+                        <td>${item['main_category']['categoryName']}</td>
+                        <td>${item['category']['categoryName']}</td>
+                        <td>${item['brand']['brandName']}</td>
                         <td>${item['stock']}</td>
                         <td>${item['price']}</td>
                         <td>${item['discount_price']}</td>
@@ -85,7 +85,7 @@
         });
     
         new DataTable('#tableData',{
-            // order:[[0,'desc']],
+            order:[[0,'desc']],
             lengthMenu:[20,30,50,100,500]
         });
         

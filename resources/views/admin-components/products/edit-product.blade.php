@@ -48,7 +48,7 @@
                 <span>
                     <p>Remark*</p>
                     <select name="remarks" id="remarks" style="width: 100%; height: 35px;">
-                        <option value="">Select Remarks</option>
+                        <option value="" disabled>Select Remarks</option>
                         <option @if ( $product->remark ==="popular" )
                             selected
                         @endif value="popular">Popular</option>
@@ -92,6 +92,7 @@
                     <input type="number" value="{{ $product->star }}" name="star" id="star">
                 </span>
                 <span>
+                    
                     <p>Color</p>
                     <input type="text" value="{{ $product_detail->color ?? '' }}" name="color" id="color">
                 </span>
@@ -108,7 +109,9 @@
                 @for ($i = 1; $i <= 4; $i++)
                     <span>
                         <p>Image {{ $i }}</p>
-                        <img class="preview-img" id="previewImg{{ $i }}" src="{{ asset($product_detail->{'img'.$i} ?? '' ) }}" alt="Image {{ $i }}" />
+                        <img class="preview-img" id="previewImg{{ $i }}" 
+                            src="{{ asset($product_detail->{'img'.$i} ?? 'images/default-placeholder.png' ) }}" 
+                            alt="Image {{ $i }}" />
                         <input 
                             type="file" 
                             name="img{{ $i }}" 
@@ -120,10 +123,10 @@
                 @endfor
             </div>
             
-            <input type="hidden" id="old_img1" value="{{ $product_detail->img1 ?? ''  }}">
-            <input type="hidden" id="old_img2" value="{{ $product_detail->img2 ?? ''  }}">
-            <input type="hidden" id="old_img3" value="{{ $product_detail->img3 ?? ''  }}">
-            <input type="hidden" id="old_img4" value="{{ $product_detail->img4 ?? ''  }}">
+            @for ($i = 1; $i <= 4; $i++)
+                <input type="hidden" id="old_img{{ $i }}" value="{{ $product_detail->{'img'.$i} ?? '' }}">
+            @endfor
+            
 
         </form>
         <button onclick="Update()" class="black-button" >Update Product</button>
@@ -226,6 +229,7 @@
             headers: { 'Content-Type': 'multipart/form-data' },
         });
         hideLoader();
+        console.log(res);
         if (res.status === 200) {
             successToast('Product Updated Successfully!');
             window.location.href = '/products-list';

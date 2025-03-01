@@ -339,7 +339,7 @@ class ProductController extends Controller
                     'discount' => 0,
                     'discount_price' => $validatedData['discount_price'],
                     'stock' => $validatedData['stock'],
-                    'remarks' => $validatedData['remarks'],
+                    'remark' => $validatedData['remarks'],
                     'star' => $validatedData['star'],
                     'main_category_id' => $validatedData['main_category_id'],
                     'category_id' => $validatedData['category_id'],
@@ -396,7 +396,13 @@ class ProductController extends Controller
     }
 
     function UpdateProduct(Request $request) {
+        
         $id = $request->input('id');
+        $img1 = $request->input('img1');
+        $img2 = $request->input('img2');
+        $img3 = $request->input('img3');
+        $img4 = $request->input('img4');
+       
         // Validate request data
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
@@ -405,18 +411,16 @@ class ProductController extends Controller
             'discount_price' => 'required|numeric',
             'stock' => 'required|numeric',
             'star' => 'required|numeric',
-            'remarks' => 'required|string|max:255',
-            'description' => 'required|string|max:1000',
+            'remarks' => 'nullable|string|max:100',
+            'description' => 'required|string|max:3000',
             'main_category_id' => 'required|numeric',
             'category_id' => 'required|numeric',
             'brand_id' => 'required|numeric',
             'color' => 'required|string|max:255',
             'size' => 'required|string|max:255',
-            'img1' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5000',
-            'img2' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5000',
-            'img3' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5000',
-            'img4' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5000',
+            
         ]);
+
     
         $imageUrls = [];
     
@@ -435,6 +439,9 @@ class ProductController extends Controller
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
         }
+        // Fetch existing product
+        $product_details = ProductDetail::where('product_id', $product->id)->first();
+        
     
         // Save the product to the database
         try {
@@ -448,7 +455,7 @@ class ProductController extends Controller
                 'discount' => 0,
                 'discount_price' => $validatedData['discount_price'],
                 'stock' => $validatedData['stock'],
-                'remarks' => $validatedData['remarks'],
+                'remark' => $validatedData['remarks'],
                 'star' => $validatedData['star'],
                 'main_category_id' => $validatedData['main_category_id'],
                 'category_id' => $validatedData['category_id'],
@@ -457,11 +464,11 @@ class ProductController extends Controller
             ]);
     
             // Update product details
-            $productDetails = ProductDetail::where('product_id', $id)->update([
-                'img1' => $imageUrls['img1'] ?? null,
-                'img2' => $imageUrls['img2'] ?? null,
-                'img3' => $imageUrls['img3'] ?? null,
-                'img4' => $imageUrls['img4'] ?? null,
+            $product_details->update([
+                'img1' => $imageUrls['img1'] ?? $product_details->img1,
+                'img2' => $imageUrls['img2'] ?? $product_details->img2,
+                'img3' => $imageUrls['img3'] ?? $product_details->img3,
+                'img4' => $imageUrls['img4'] ?? $product_details->img4,
                 'color' => $validatedData['color'],
                 'size' => $validatedData['size'],
                 'des' => $validatedData['description'],
@@ -469,7 +476,7 @@ class ProductController extends Controller
     
             DB::commit();
     
-            return response()->json(['message' => 'Product updated successfully', 'product' => $product], 200);
+            return response()->json(['message' => 'Product updated successfully', 'product' => $product, 'product_details'=>$product_details], 200);
     
         } catch (\Exception $e) {
             DB::rollBack();
