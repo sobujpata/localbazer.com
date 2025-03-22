@@ -139,6 +139,7 @@ Route::middleware(['user'])->group(function () {
     
     //invoice Route
     Route::get('/payment-form', [InvoiceController::class, 'InvoicePage'])->middleware([TokenVerificationMiddleware::class]);
+    Route::get('/order-form/{id}', [InvoiceController::class, 'OrderPage'])->middleware([TokenVerificationMiddleware::class]);
     Route::get('/invoices', [InvoiceController::class, 'InvoicesCustomer'])->name('invoices.index')->middleware([TokenVerificationMiddleware::class]);
     //invoice API
     Route::post("/create-invoice", [InvoiceController::class, 'InvoiceCreate'])->name('create.invoice')->middleware([TokenVerificationMiddleware::class]);

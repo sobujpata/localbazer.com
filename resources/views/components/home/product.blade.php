@@ -93,7 +93,9 @@
                 <div class="product-grid" id="newProductsList">
 
                 </div>
-                <a href="{{ url('/products-remark/new') }}" style="text-align: right">See All</a>
+                <button id="loadMoreBtn" class="mt-3">Load More</button>
+                
+                <a href="{{ url('/products-remark/all') }}" style="text-align: right">See All Products</a>
             </div>
 
         </div>
@@ -110,7 +112,6 @@
         //new arraivals
         try {
             let res = await axios.get("new-arrivals");
-// console.log(res)
                     // Clear existing items for both newArrivals and newArrivals2
                     document.getElementById("newArrivals").innerHTML = '';
                     document.getElementById("newArrivals2").innerHTML = '';
@@ -463,63 +464,124 @@
         }
 
         //New products
-        try {
-            let resNewProduct = await axios.get("new-products");
+        let currentPage = 1;  // Track the current page
+        const perPage = 12; // Products per page
+        let nextPageUrl = null; // Store next page URL
 
+        // Function to fetch and append products without changing the URL
+        async function fetchProducts(page = 1, append = false) {
+            try {
+                let res = await axios.get(`/new-products?page=${page}&limit=${perPage}`);
 
-            // Clear existing items
-            document.getElementById("newProductsList").innerHTML = '';
+                // console.log(res);
+                let NewProductHtml = '';
 
-            let NewProductHtml = '';
-            resNewProduct.data.data.forEach(function(item) {
-            let countdownEnd = new Date(item['count_down']);  // Assuming 'deal_end_time' is in your data
-            let star = item['star'];  // Make sure the key is correct, 'star' should be part of 'item.products'
-            let productId = item['id'];  // Unique product ID
+                res.data.data.forEach((item) => {
+                    let productId = item['id'];
+                    let color = Array.isArray(item.product_details) && item.product_details.length > 0 
+                        ? item.product_details[0].color 
+                        : item?.product_details?.color; // Handle both array and single object cases
+                    let img2 = Array.isArray(item.product_details) && item.product_details.length > 0 
+                        ? item.product_details[0].img2 
+                        : item?.product_details?.img2; // Handle both array and single object cases
 
-            NewProductHtml += `
-                       <div class="showcase">
+                    // console.log(color);
+                    NewProductHtml += `
+                        <div class="showcase">
+                            <div class="showcase-banner">
+                                <img src="${item.image}" alt="${item.title}" class="product-img default" width="300">
+                                <img src="${img2}" alt="${item.title}" class="product-img hover" width="300">
+                                <p class="showcase-badge angle pink">${item.discount}</p>
+                                <div class="showcase-actions">
+                                    
+                            
+                                    <button class="btn-action" title="View Details">
+                                        <a href="/products/${productId}">
+                                            <ion-icon name="eye-outline"></ion-icon>
+                                        </a>
+                                    </button>
 
-                        <div class="showcase-banner">
-                            <img src="${item['image']}" alt="Casual Men's Brown shoes"
-                                class="product-img default" width="300">
-                            <img src="${item['image']}" alt="Casual Men's Brown shoes"
-                                class="product-img hover" width="300">
+                                    <button class="btn-action" onclick="AddToCartFromAll(this)">
+                                        <ion-icon name="cart-outline"></ion-icon>
+                                    </button>
+                                    
+                            
+                                    <button class="btn-action">
+                                        <a href="/order-form/${productId}">
+                                            <ion-icon name="bag-add-outline"></ion-icon>
+                                        </a>
+                                        
+                                    </button>
+                                </div>
+                            </div>
+                
+                            <div class="showcase-content">
+                                <a href="/product-category/${item.categories?.categoryName}" class="showcase-category">${item.categories?.categoryName || 'Uncategorized'}</a>
+
+                                <h3>
+                                    <a href="/products/${productId}" class="showcase-title">${item.title}</a>
+                                </h3>
+
+                                <div class="showcase-rating" id="rating-container-${productId}"></div>
+
+                                <div class="price-box">
+                                    <p><strong><del>${item.price}</del></strong></p>  
+                                    <p class="price"><strong>${item.discount_price}</strong></p>
+                                </div>
+                            </div>
+                            
+                                <div class="row my-2">
+                                    <input type="hidden" value="${color || 'null'} " class="p_color_all">
+                                    <input type="hidden" min="0" value="1" name="quantity" step="1" aria-label="Quantity" class="p_qty_all">
+                                </div>
+                                <input type="hidden" value="${productId}" class="p_id_all">
 
                             
                         </div>
-
-                        <div class="showcase-content">
-                            <a href="/products/${item['id']}" class="showcase-category">${item.categories['categoryName']}</a>
-
-                            <h3>
-                                <a href="/products/${item['id']}" class="showcase-title">${item['title']}</a>
-                            </h3>
-
-                            <div class="showcase-rating" id="rating-container-${productId}"></div> <!-- Unique ID here -->
-
-                            <div class="price-box">
-                                <p><strong><del>${item['price']}</del></strong></p>  
-                                <p class="price"><strong>${item['discount_price']}</strong></p>
-                            </div>
-
-                        </div>
-
-                    </div>
                     `;
-
-                    // Render the stars dynamically for each product after appending the NewProductHtml
-                    setTimeout(() => {
-                        renderStars(star, `rating-container-${productId}`);
-                    }, 0);
                 });
 
-            // Insert into DOM
-            document.getElementById("newProductsList").innerHTML = NewProductHtml;
+                if (append) {
+                    // Append new products without removing old ones
+                    document.getElementById("newProductsList").innerHTML += NewProductHtml;
+                } else {
+                    // Load fresh products (first-time load)
+                    document.getElementById("newProductsList").innerHTML = NewProductHtml;
+                }
 
+                // Render stars after updating the DOM
+                res.data.data.forEach((item) => {
+                    renderStars(item.star, `rating-container-${item.id}`);
+                });
 
-        } catch (error) {
-            console.error('Error loading New Product:', error);
+                // Update next page URL
+                nextPageUrl = res.data.next_page_url;
+
+                // Hide "Load More" button if no more pages
+                if (!nextPageUrl) {
+                    document.getElementById("loadMoreBtn").style.display = "none";
+                }
+            } catch (error) {
+                console.error('Error loading products:', error);
+            }
         }
+
+        // Function to load next page without changing URL
+        function loadNextProducts() {
+            if (nextPageUrl) {
+                currentPage++; // Increase page count
+                fetchProducts(currentPage, true); // Append new products
+            }
+        }
+
+        // Load first page on page load
+        fetchProducts();
+
+        // Event Listener for "Load More" button
+        document.getElementById("loadMoreBtn").addEventListener("click", loadNextProducts);
+
+
+        
 
 
 

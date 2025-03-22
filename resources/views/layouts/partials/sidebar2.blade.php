@@ -54,28 +54,26 @@
                 @foreach ($bestSale as $item)
                 <div class="showcase">
 
-                    <a href="#" class="showcase-img-box">
+                    <a href="{{ url('/products/'.$item->id) }}" class="showcase-img-box">
                         <img src="{{ asset($item->image) }}" alt="baby fabric shoes" width="75" height="75"
                             class="showcase-img">
                     </a>
 
                     <div class="showcase-content">
 
-                        <a href="#">
+                        <a href="{{ url('/products/'.$item->id) }}">
                             <h4 class="showcase-title">{{ $item->title }}</h4>
                         </a>
 
                         <div class="showcase-rating">
-                            <ion-icon name="star"></ion-icon>
-                            <ion-icon name="star"></ion-icon>
-                            <ion-icon name="star"></ion-icon>
-                            <ion-icon name="star"></ion-icon>
-                            <ion-icon name="star"></ion-icon>
+                            @for ($i = 1; $i <= 5; $i++)
+                                <ion-icon name="{{ $i <= $item->star ? 'star' : 'star-outline' }}"></ion-icon>
+                            @endfor
                         </div>
 
                         <div class="price-box">
                             <del>{{ $item->price }}</del>
-                            <p class="price">{{ $item->discount_price }}</p>
+                            <span class="price">{{ $item->discount_price }}</span>
                         </div>
 
                     </div>

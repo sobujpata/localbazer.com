@@ -77,11 +77,14 @@ class ProductController extends Controller
         return response()->json($deals);
     }
 
-    public function NewProducts()
+    public function NewProducts(Request $request)
     {
-        $products = Product::orderBy('updated_at', "desc")->with('categories')->paginate(12);
+        $limit = $request->get('limit', 12); // Default to 6 products per page
+        $products = Product::with('categories')->with('product_details')->paginate($limit);
+        return response()->json($products);        
+        // $products = Product::orderBy('updated_at', "desc")->with('categories')->paginate(12);
 
-        return response()->json($products);
+        // return response()->json($products);
     }
 
    
@@ -125,7 +128,6 @@ class ProductController extends Controller
 
     public function CategoryWise(Request $request, $categoryName)
     {
-        
 
         // Trim spaces and replace special characters
         $cleanCategoryName = trim($categoryName);
@@ -134,11 +136,12 @@ class ProductController extends Controller
 
         $category = Category::where('categoryName', $cleanCategoryName)->first();
 
+
         if (!$category) {
             return response()->json(['message' => 'Category not found'], 404);
         }
 
-        $products = Product::where('category_id', $category->id)->paginate(8);
+        $products = Product::where('category_id', $category->id)->with('product_details')->paginate(12);
 
         // Fetch all main categories with their related categories (subcategories)
         $mainCategories = MainCategory::with('categories')->get();
@@ -163,12 +166,19 @@ class ProductController extends Controller
     public function ProductRemark(Request $request, $remark)
     {
         // dd( $remark);
-        $products = Product::where('remark', $remark)->paginate(8);
+        if($remark == 'all'){
+            $products = Product::orderBy('created_at', 'desc')->with('product_details')->paginate(12);
+            // foreach ($products as $product) {
+            //     dd($product->product_details); // Debug first product's product_details
+            // }
+        }else{
+            $products = Product::where('remark', $remark)->paginate(12);
+        }
         $mainCategories = MainCategory::with('categories')->get();
 
         $bestSale = Product::where("remark", "popular")->take(4)->get();
 
-        return view('home.products-remark', compact('products', 'remark','mainCategories','bestSale'));
+        return view('home.products-remark', compact('products', 'remark', 'mainCategories', 'bestSale'));
     }
 
     public function CreateCartList(Request $request)
@@ -390,7 +400,7 @@ class ProductController extends Controller
 
         // dd($productId);
         $product = Product::where('id', $productId)->with('main_category','category', 'brand')->first();
-        $product_detail = ProductDetail::where('id', $productId)->first();
+        $product_detail = ProductDetail::where('product_id', $productId)->first();
         // Check if the product exists
         if (!$product) {
             return redirect()->route('product.list')->with('error', 'Product not found');

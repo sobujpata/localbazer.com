@@ -88,12 +88,10 @@
     <script>
         
         async function AddToCart() {
-            
-
             const p_id = document.getElementById('p_id').value;
             const p_color = document.getElementById('p_color').value;
             const p_qty = parseInt(document.getElementById('p_qty').value, 10);
-    
+            
             if (!p_color) {
                 return alert("Please select a color.");
             }
@@ -122,7 +120,43 @@
                     errorToast("An error occurred. Please try again.");
                 }
             }
-        }
+    }
+        async function AddToCartFromAll(button) {
+            let parent = button.closest('.showcase'); // Find the closest product container
+            let color = parent.querySelector('.p_color_all')?.value;
+            let quantity = parent.querySelector('.p_qty_all')?.value;
+            let productId = parent.querySelector('.p_id_all')?.value;
+
+            console.log(`Product ID: ${productId}, Color: ${color}, Quantity: ${quantity}`);
+            if (!color) {
+                return alert("Please select a color.");
+            }
+            if (!quantity || quantity <= 0) {
+                return alert("Quantity must be greater than 0.");
+            }
+    
+            try {
+                showLoader();
+                const response = await axios.post("/CreateCartList", { product_id: productId, color: color, qty: quantity });
+                hideLoader();
+    
+                if (response.status === 201 && response.data.status === 'success') {
+                    successToast(response.data.message);
+                    // await CountCart();
+                } else {
+                    errorToast("Failed to add to cart. Please login.");
+                    window.location.href = "/login";
+                }
+            } catch (error) {
+                hideLoader();
+                if (error.response?.status === 401) {
+                    sessionStorage.setItem("last_location", window.location.href);
+                    window.location.href = "/login";
+                } else {
+                    errorToast("An error occurred. Please try again.");
+                }
+            }
+    }
     
     
     

@@ -23,6 +23,11 @@
                     <p>Main Category Name*</p>
                     <select name="main_category_id" id="main_category_id" style="width: 100%; height: 35px;">
                         <option value="">Select Sub Category</option>
+                        @foreach ($mainCategory as $item)
+                            <option value="{{ $item->id }}" @if ($item->id == $subCategory->main_category_id)
+                                selected
+                            @endif>{{ $item->categoryName }}</option>
+                        @endforeach
                     </select>
                 </span>
            
@@ -44,22 +49,20 @@
 </div>
 
 <script>
-    FillCategoryDropDown();
+    // FillCategoryDropDown();
 
-    async function FillCategoryDropDown(){
-        // showLoader();
-        let res = await axios.get("/list-main-category")
-        // console.log(res);
-        res.data.forEach(function (item,i) {
-            let option=`<option @if ( $subCategory->main_category_id )
-                selected
-            @endif value="${item['id']}">${item['categoryName']}</option>`
-            $("#main_category_id").append(option);
-        })
+    // async function FillCategoryDropDown(){
+    //     // showLoader();
+    //     let res = await axios.get("/list-main-category")
+    //     console.log(res);
+    //     res.data.forEach(function (item,i) {
+    //         let option=`<option value="${item['id']}">${item['categoryName']}</option>`
+    //         $("#main_category_id").append(option);
+    //     })
         
 
-        hideLoader()
-    }
+    //     hideLoader()
+    // }
 
 
     async function Update() {

@@ -54,6 +54,37 @@ class InvoiceController extends Controller
             'bestSale'
         ));
     }
+    public function OrderPage(Request $request, $id){
+        $user_id = $request->header('id');
+        $user = User::findOrFail($user_id);
+        $id = $request->id;
+        // dd($id);
+
+        $customer_details = CustomerProfile::where('user_id', $user_id)->first();
+
+        $products = Product::findOrFail($id);
+        $product_details = ProductDetail::where('product_id', $products->id)->first();
+        // dd($product_details);
+        $total_product_price_r = $products->discount_price;
+        $total_product_price = round($total_product_price_r, 2);
+        $shipping_charge = round(00, 2);
+        $total_pay = round($total_product_price + $shipping_charge, 2);
+
+        $mainCategories = MainCategory::with('categories')->get();
+        $bestSale = Product::where("remark", "popular")->take(4)->get();
+        // dd($products);
+        return view('home.order-page', compact(
+            'user', 
+            'customer_details', 
+            'products', 
+            'total_product_price',
+            'shipping_charge',
+            'total_pay',
+            'mainCategories',
+            'bestSale',
+            'product_details',
+        ));
+    }
 
     public function updateDeliveryStatus(Request $request)
     {
@@ -143,31 +174,46 @@ class InvoiceController extends Controller
                     'ship_phone' => $validatedData['mobile'],
                 ]
             );
-            // Retrieve products from the product_carts table
-            $productCards = DB::table('product_carts')->where('user_id', $user_id)->get();
             
-            if ($productCards->isEmpty()) {
-                throw new \Exception('No products found in the cart.');
-            }
+            if($request->buy_now ==! 1 || null){
+                // Retrieve products from the product_carts table
+                $productCards = DB::table('product_carts')->where('user_id', $user_id)->get();
+                            
+                if ($productCards->isEmpty()) {
+                    throw new \Exception('No products found in the cart.');
+                }
 
-            // Insert products into the product_details table
-            $productDetails = [];
-            foreach ($productCards as $productCard) {
-                $productDetails[] = [
+                // Insert products into the product_details table
+                $productDetails = [];
+                foreach ($productCards as $productCard) {
+                    $productDetails[] = [
+                        'invoice_id' => $invoice->id,
+                        'product_id' => $productCard->product_id,
+                        'user_id' => $user_id,
+                        'qty' => $productCard->qty,
+                        'sale_price' => $productCard->price,
+                        'color' => $productCard->color,
+                        'size' => $productCard->size,
+                        
+                    ];
+                }
+                InvoiceProduct::insert($productDetails);
+
+                // Clear the product_carts table for the user
+                DB::table('product_carts')->where('user_id', $user_id)->delete();
+            }else{
+                // dd($request);
+                InvoiceProduct::create([
                     'invoice_id' => $invoice->id,
-                    'product_id' => $productCard->product_id,
+                    'product_id' => $request->product_id,
                     'user_id' => $user_id,
-                    'qty' => $productCard->qty,
-                    'sale_price' => $productCard->price,
-                    'color' => $productCard->color,
-                    'size' => $productCard->size,
-                    
-                ];
+                    'qty' => 1,
+                    'sale_price' => $request->subtotal + $request->shipping_charge,
+                    'color' => $request->product_color,
+                    'size' => $request->product_size,
+                ]);
             }
-            InvoiceProduct::insert($productDetails);
-
-            // Clear the product_carts table for the user
-            DB::table('product_carts')->where('user_id', $user_id)->delete();
+            
 
             // Commit the transaction
             DB::commit();

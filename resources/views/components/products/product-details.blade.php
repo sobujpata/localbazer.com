@@ -227,16 +227,15 @@
 
                     <div class="purchase-info">
                         <!-- Inline Input and Button -->
-
-                        
-
                         <button onclick="AddToCart()" type="button" class="btn add-to-cart-btn btn-sm"
                             aria-label="Add to Cart">
-                            Add to Cart <i class="fas fa-shopping-cart"></i>
+                            Add to Cart 
+                            {{-- <i class="fas fa-shopping-cart"></i> --}}
                         </button>
-                        <a href="">
-                            <button onclick="AddToWishList()" type="button" class="btn shop-now-btn btn-sm">
-                                Add to Wish <i class="fa fa-heart" aria-hidden="true"></i>
+                        <a href="{{ url('/order-form/'.$product->id) }}">
+                            <button type="button" class="btn shop-now-btn btn-sm">
+                                Buy Now 
+                                {{-- <i class="fa-regular fa-bag-shopping"></i> --}}
                             </button>
                         </a>
                         </form>

@@ -149,17 +149,17 @@
         // showLoader();
         let res = await axios.get("/list-main-category")
         let resSubCategory = await axios.get("/list-sub-category")
-        // console.log(res);
-        res.data.forEach(function (item,i) {
-            let option=`<option @if ( $product->main_category_id )
-                selected
-            @endif value="${item['id']}">${item['categoryName']}</option>`
+        console.log(res);
+        res.data.forEach(function (item, i) {
+            let selected = (item['id'] == {{ $product->main_category_id ?? 'null' }}) ? 'selected' : ''; 
+
+            let option = `<option ${selected} value="${item['id']}">${item['categoryName']}</option>`;
+            
             $("#main_category_id").append(option);
-        })
+        });
         resSubCategory.data.forEach(function (item,i) {
-            let option=`<option @if ( $product->category_id )
-                selected
-            @endif value="${item['id']}">${item['categoryName']}</option>`
+            let selected = (item['id'] == {{ $product->category_id ?? 'null' }}) ? 'selected' : ''; 
+            let option=`<option ${selected} value="${item['id']}">${item['categoryName']}</option>`
             $("#category_id").append(option);
         })
 
@@ -170,9 +170,8 @@
         let res = await axios.get('/list-brand');
 
         res.data.forEach(function (item,i) {
-            let option=`<option @if ( $product->brand_id )
-                selected
-            @endif value="${item['id']}">${item['brandName']}</option>`
+            let selected = (item['id'] == {{ $product->brand_id ?? 'null' }}) ? 'selected' : ''; 
+            let option=`<option ${selected} value="${item['id']}">${item['brandName']}</option>`
             $("#brand_id").append(option);
         })
     }

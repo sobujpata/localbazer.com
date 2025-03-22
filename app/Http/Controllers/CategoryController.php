@@ -120,8 +120,9 @@ class CategoryController extends Controller
     public function SubCategoryEdit(Request $request){
         $id = $request->query('id');
         $subCategory = Category::where('id', $id)->first();
+        $mainCategory = MainCategory::all();
 
-        return view('admin-page.sub-category-edit', compact('subCategory'));
+        return view('admin-page.sub-category-edit', compact('subCategory', 'mainCategory'));
     }
 
     public function SubCategoryUpdate(Request $request){

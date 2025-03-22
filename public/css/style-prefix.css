@@ -2173,7 +2173,10 @@ footer {
  * responsive larger than 480px screen
  */
 
-@media (min-width: 350px) {
+@media (min-width: 300px) {
+  .container {
+    padding: 5px !important;
+  }
 
   /**
    * #CUSTOM PROPERTY
